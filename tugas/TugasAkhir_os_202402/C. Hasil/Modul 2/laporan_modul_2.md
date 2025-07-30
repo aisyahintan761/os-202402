@@ -1,97 +1,98 @@
 # 📝 Laporan Tugas Akhir
 
-**Mata Kuliah**: Sistem Operasi
-**Semester**: Genap / Tahun Ajaran 2024–2025
-**Nama**: `<Nama Lengkap>`
-**NIM**: `<Nomor Induk Mahasiswa>`
-**Modul yang Dikerjakan**:
-`(Contoh: Modul 1 – System Call dan Instrumentasi Kernel)`
+**Mata Kuliah**: Sistem Operasi  
+**Semester**: Genap / Tahun Ajaran 2024–2025  
+**Nama**: Aisyah Intan Nurjannah  
+**NIM**: 240202894
+**Modul yang Dikerjakan**:  
+`Modul 2 – Penjadwalan CPU Lanjutan (Priority Scheduling Non-Preemptive)`
 
 ---
 
 ## 📌 Deskripsi Singkat Tugas
 
-Tuliskan deskripsi singkat dari modul yang Anda kerjakan. Misalnya:
+Modul ini bertujuan untuk **mengubah algoritma penjadwalan CPU di xv6-public dari Round Robin menjadi Non-Preemptive Priority Scheduling**.  
+Langkah-langkah utama yang dilakukan adalah:
+* Menambahkan field **`priority`** pada setiap proses.
+* Membuat system call baru **`set_priority(int)`** untuk mengatur prioritas proses.
+* Memodifikasi fungsi **`scheduler()`** agar selalu memilih proses RUNNABLE dengan prioritas tertinggi (angka terkecil).
 
-* **Modul 1 – System Call dan Instrumentasi Kernel**:
-  Menambahkan dua system call baru, yaitu `getpinfo()` untuk melihat proses yang aktif dan `getReadCount()` untuk menghitung jumlah pemanggilan `read()` sejak boot.
 ---
 
 ## 🛠️ Rincian Implementasi
 
-Tuliskan secara ringkas namun jelas apa yang Anda lakukan:
+Berikut perubahan yang dilakukan pada kode sumber:
 
-### Contoh untuk Modul 1:
+1. **File `proc.h`**  
+   * Menambahkan field `int priority;` pada struktur `struct proc`.
 
-* Menambahkan dua system call baru di file `sysproc.c` dan `syscall.c`
-* Mengedit `user.h`, `usys.S`, dan `syscall.h` untuk mendaftarkan syscall
-* Menambahkan struktur `struct pinfo` di `proc.h`
-* Menambahkan counter `readcount` di kernel
-* Membuat dua program uji: `ptest.c` dan `rtest.c`
+2. **File `proc.c`**
+   * Pada `allocproc()`, inisialisasi prioritas default:  
+     ```c
+     p->priority = 60; // default
+     ```
+   * Modifikasi fungsi `scheduler()` untuk memilih proses RUNNABLE dengan prioritas tertinggi (nilai terkecil) secara **non-preemptive**.
+
+3. **File `syscall.h`**
+   * Menambahkan nomor syscall baru:  
+     ```c
+     #define SYS_set_priority 24
+     ```
+
+4. **File `syscall.c`**
+   * Registrasi syscall baru `set_priority` ke dalam array `syscalls[]`.
+
+5. **File `sysproc.c`**
+   * Implementasi fungsi `sys_set_priority()` untuk mengatur prioritas proses.
+
+6. **File `user.h` dan `usys.S`**
+   * Deklarasi dan entri syscall `set_priority(int)`.
+
+7. **File `Makefile`**
+   * Menambahkan program uji baru `ptest.c` ke daftar `UPROGS`.
+
+8. **Program Uji `ptest.c`**
+   * Membuat dua child process dengan prioritas berbeda (10 dan 90), lalu mengamati urutan eksekusi.
+
 ---
 
 ## ✅ Uji Fungsionalitas
 
-Tuliskan program uji apa saja yang Anda gunakan, misalnya:
+Program uji yang digunakan:  
 
-* `ptest`: untuk menguji `getpinfo()`
-* `rtest`: untuk menguji `getReadCount()`
-* `cowtest`: untuk menguji fork dengan Copy-on-Write
-* `shmtest`: untuk menguji `shmget()` dan `shmrelease()`
-* `chmodtest`: untuk memastikan file `read-only` tidak bisa ditulis
-* `audit`: untuk melihat isi log system call (jika dijalankan oleh PID 1)
+* **`ptest`**:  
+  Menguji penjadwalan **non-preemptive priority**.  
+  - Child dengan prioritas tinggi (10) harus selesai lebih dulu.  
+  - Child dengan prioritas rendah (90) dijalankan setelahnya.
 
 ---
 
 ## 📷 Hasil Uji
 
-Lampirkan hasil uji berupa screenshot atau output terminal. Contoh:
+### 📍 Output Program `ptest`
+$ ptest
+Child 2 selesai // prioritas tinggi (10)
+Child 1 selesai // prioritas rendah (90)
+Parent selesai
 
-### 📍 Contoh Output `cowtest`:
+yaml
+Copy
+Edit
 
-```
-Child sees: Y
-Parent sees: X
-```
-
-### 📍 Contoh Output `shmtest`:
-
-```
-Child reads: A
-Parent reads: B
-```
-
-### 📍 Contoh Output `chmodtest`:
-
-```
-Write blocked as expected
-```
-
-Jika ada screenshot:
-
-```
-![hasil cowtest](./screenshots/cowtest_output.png)
-```
+Output ini sesuai ekspektasi: proses dengan prioritas tertinggi (angka terkecil) dieksekusi terlebih dahulu.
 
 ---
 
 ## ⚠️ Kendala yang Dihadapi
 
-Tuliskan kendala (jika ada), misalnya:
-
-* Salah implementasi `page fault` menyebabkan panic
-* Salah memetakan alamat shared memory ke USERTOP
-* Proses biasa bisa akses audit log (belum ada validasi PID)
+* Pada awal implementasi, lupa memanggil `sti()` dalam `scheduler()`, menyebabkan CPU tidak menerima interrupt.
+* Salah validasi range prioritas pada `sys_set_priority`, menyebabkan panic saat diberi nilai negatif.
+* Perlu memastikan scheduler berjalan **non-preemptive**, sehingga tidak menggunakan timer interrupt untuk preemption.
 
 ---
 
 ## 📚 Referensi
 
-Tuliskan sumber referensi yang Anda gunakan, misalnya:
-
-* Buku xv6 MIT: [https://pdos.csail.mit.edu/6.828/2018/xv6/book-rev11.pdf](https://pdos.csail.mit.edu/6.828/2018/xv6/book-rev11.pdf)
-* Repositori xv6-public: [https://github.com/mit-pdos/xv6-public](https://github.com/mit-pdos/xv6-public)
-* Stack Overflow, GitHub Issues, diskusi praktikum
-
----
-
+* Buku xv6 MIT: [https://pdos.csail.mit.edu/6.828/2018/xv6/book-rev11.pdf](https://pdos.csail.mit.edu/6.828/2018/xv6/book-rev11.pdf)  
+* Repositori xv6-public: [https://github.com/mit-pdos/xv6-public](https://github.com/mit-pdos/xv6-public)  
+* Diskusi forum Stack Overflow dan GitHub Issues terkait xv6 scheduling.  
