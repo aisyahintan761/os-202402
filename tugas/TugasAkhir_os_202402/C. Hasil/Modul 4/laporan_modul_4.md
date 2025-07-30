@@ -70,6 +70,9 @@ shell
 Copy
 Edit
 
+<img width="771" height="278" alt="mdl4a" src="https://github.com/user-attachments/assets/2d6c304d-251a-49b5-8acd-c5385244ea28" />
+
+
 ### Output `randomtest`:
 19 45 232 11 89 77 254 1
 
@@ -84,7 +87,7 @@ yaml
 Copy
 Edit
 
-![hasil ptest dan rtest](./sceerenshoot4/modul4.PNG)
+<img width="767" height="321" alt="mdl4b" src="https://github.com/user-attachments/assets/cc6be8b8-7da8-4378-b5a3-03d597aca109" />
 
 ---
 
