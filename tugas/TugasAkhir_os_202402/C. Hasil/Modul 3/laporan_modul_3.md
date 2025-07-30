@@ -47,6 +47,8 @@ shell
 Copy
 Edit
 
+<img width="670" height="316" alt="modul 3a" src="https://github.com/user-attachments/assets/f9fa8165-3073-432e-bbd3-45d459353fc2" />
+
 ### 📍 Output `shmtest`:
 Child reads: A
 Parent reads: B
@@ -62,7 +64,6 @@ yaml
 Copy
 Edit
 
-<img width="670" height="316" alt="modul 3a" src="https://github.com/user-attachments/assets/f9fa8165-3073-432e-bbd3-45d459353fc2" />
 
 <img width="736" height="337" alt="modul 3b" src="https://github.com/user-attachments/assets/1f7825ea-3fff-4ce4-8d9e-0856131d2866" />
 
