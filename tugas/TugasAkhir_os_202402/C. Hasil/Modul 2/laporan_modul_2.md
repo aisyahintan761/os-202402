@@ -81,7 +81,8 @@ Edit
 
 Output ini sesuai ekspektasi: proses dengan prioritas tertinggi (angka terkecil) dieksekusi terlebih dahulu.
 
-![hasil ptest dan rtest](./screenshoot2/modul2.PNG)
+<img width="733" height="232" alt="modul2" src="https://github.com/user-attachments/assets/837681e8-0136-478d-9ee5-377ffeef7777" />
+
 
 ---
 
