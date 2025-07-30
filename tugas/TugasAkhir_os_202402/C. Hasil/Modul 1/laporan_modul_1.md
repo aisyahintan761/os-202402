@@ -61,7 +61,7 @@ Read Count Sebelum: 4
 hello
 Read Count Setelah: 5
 
-![hasil ptest dan rtest](./screenshoot1/mpdul1.PNG)
+![hasil ptest dan rtest](./screenshoot1/modul1.PNG)
 ---
 
 ## ⚠️ Kendala yang Dihadapi
