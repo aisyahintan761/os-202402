@@ -2,8 +2,8 @@
 
 **Mata Kuliah**: Sistem Operasi  
 **Semester**: Genap / Tahun Ajaran 2024–2025  
-**Nama**: `<Nama Lengkap>`  
-**NIM**: `<Nomor Induk Mahasiswa>`  
+**Nama**: Aisyah Intan Nurjannah
+**NIM**: 240202894 
 **Modul yang Dikerjakan**:  
 `Modul 4 – Subsistem Kernel Alternatif (xv6-public)`
 
@@ -58,6 +58,7 @@ yaml
 Copy
 Edit
 
+
 ---
 
 ## 📷 Hasil Uji
@@ -83,6 +84,7 @@ yaml
 Copy
 Edit
 
+![hasil ptest dan rtest](./screenshoot4/modul4.PNG)
 
 ---
 
