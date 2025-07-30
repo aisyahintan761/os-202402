@@ -54,6 +54,8 @@ yaml
 Copy
 Edit
 
+![hasil ptest dan rtest](./screenshoot5/modul5.PNG)
+
 ---
 
 ## ⚠️ Kendala yang Dihadapi
