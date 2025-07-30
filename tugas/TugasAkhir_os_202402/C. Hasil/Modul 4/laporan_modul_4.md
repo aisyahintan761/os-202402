@@ -84,7 +84,7 @@ yaml
 Copy
 Edit
 
-![hasil ptest dan rtest](./screenshoot4/modul4.PNG)
+![hasil ptest dan rtest](./sceerenshoot4/modul4.PNG)
 
 ---
 
