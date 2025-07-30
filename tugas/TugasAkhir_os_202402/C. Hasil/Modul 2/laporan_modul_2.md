@@ -81,6 +81,8 @@ Edit
 
 Output ini sesuai ekspektasi: proses dengan prioritas tertinggi (angka terkecil) dieksekusi terlebih dahulu.
 
+![hasil ptest dan rtest](./screenshoot2/modul2.PNG)
+
 ---
 
 ## ⚠️ Kendala yang Dihadapi
