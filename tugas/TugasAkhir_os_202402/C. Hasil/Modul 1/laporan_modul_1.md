@@ -45,7 +45,6 @@ Langkah-langkah implementasi yang dilakukan adalah:
 
 📷 Hasil Uji
 📍 Output ptest (uji getpinfo):
-yaml
 PID     MEM     NAME
 1       4096    init
 2       2048    sh
@@ -58,11 +57,11 @@ Parent reads: B
 ```
 
 📍 Output rtest (uji getreadcount):
-mathematica
 Read Count Sebelum: 4
 hello
 Read Count Setelah: 5
 
+![hasil ptest dan rtest](./screenshoot1/mpdul1.PNG)
 ---
 
 ## ⚠️ Kendala yang Dihadapi
