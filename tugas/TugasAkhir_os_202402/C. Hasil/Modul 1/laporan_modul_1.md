@@ -1,97 +1,83 @@
-# 📝 Laporan Tugas Akhir
-
-**Mata Kuliah**: Sistem Operasi
-**Semester**: Genap / Tahun Ajaran 2024–2025
-**Nama**: `<Nama Lengkap>`
-**NIM**: `<Nomor Induk Mahasiswa>`
-**Modul yang Dikerjakan**:
-`(Contoh: Modul 1 – System Call dan Instrumentasi Kernel)`
+Mata Kuliah: Sistem Operasi
+Semester: Genap / Tahun Ajaran 2024–2025
+Nama: Aisyah Intan Nurjannah
+NIM: 240202894
+Modul yang Dikerjakan: Modul 1 – System Call dan Instrumentasi Kernel
 
 ---
 
-## 📌 Deskripsi Singkat Tugas
+📌 Deskripsi Singkat Tugas
+Pada modul ini, dilakukan implementasi dua system call baru pada kernel xv6-public (x86):
 
-Tuliskan deskripsi singkat dari modul yang Anda kerjakan. Misalnya:
+1. getpinfo(struct pinfo *ptable) → Menampilkan informasi proses aktif berupa PID, ukuran memori, dan nama proses.
 
-* **Modul 1 – System Call dan Instrumentasi Kernel**:
-  Menambahkan dua system call baru, yaitu `getpinfo()` untuk melihat proses yang aktif dan `getReadCount()` untuk menghitung jumlah pemanggilan `read()` sejak boot.
----
+2. getreadcount() → Mengembalikan jumlah pemanggilan fungsi read() sejak sistem booting.
 
-## 🛠️ Rincian Implementasi
-
-Tuliskan secara ringkas namun jelas apa yang Anda lakukan:
-
-### Contoh untuk Modul 1:
-
-* Menambahkan dua system call baru di file `sysproc.c` dan `syscall.c`
-* Mengedit `user.h`, `usys.S`, dan `syscall.h` untuk mendaftarkan syscall
-* Menambahkan struktur `struct pinfo` di `proc.h`
-* Menambahkan counter `readcount` di kernel
-* Membuat dua program uji: `ptest.c` dan `rtest.c`
----
-
-## ✅ Uji Fungsionalitas
-
-Tuliskan program uji apa saja yang Anda gunakan, misalnya:
-
-* `ptest`: untuk menguji `getpinfo()`
-* `rtest`: untuk menguji `getReadCount()`
-* `cowtest`: untuk menguji fork dengan Copy-on-Write
-* `shmtest`: untuk menguji `shmget()` dan `shmrelease()`
-* `chmodtest`: untuk memastikan file `read-only` tidak bisa ditulis
-* `audit`: untuk melihat isi log system call (jika dijalankan oleh PID 1)
+Tujuan modul ini adalah untuk memahami mekanisme pendaftaran system call baru pada kernel xv6, memodifikasi kernel agar mendukung fitur tambahan, serta membuat program user-level untuk menguji fungsionalitas yang ditambahkan.
 
 ---
 
-## 📷 Hasil Uji
+🛠️ Rincian Implementasi
 
-Lampirkan hasil uji berupa screenshot atau output terminal. Contoh:
+Langkah-langkah implementasi yang dilakukan adalah:
+1. Menambahkan struktur struct pinfo di file proc.h untuk menyimpan informasi proses.
+2. Menambahkan counter global readcount di sysproc.c untuk menghitung jumlah pemanggilan read().
+3. Mendaftarkan syscall baru dengan menambah entri di:
+    a. syscall.h → nomor syscall
+    b. syscall.c → fungsi handler syscall
+    c. user.h dan usys.S → deklarasi fungsi syscall di user space
+4. Mengimplementasikan fungsi sys_getpinfo dan sys_getreadcount di sysproc.c.
+5. Memodifikasi fungsi sys_read di sysfile.c untuk menambah counter readcount.
+6. Membuat dua program uji di user-level (ptest.c dan rtest.c) untuk memverifikasi hasil implementasi.
+7. Mendaftarkan program uji ke dalam Makefile agar dapat dijalankan di shell xv6.
 
-### 📍 Contoh Output `cowtest`:
+---
 
-```
-Child sees: Y
-Parent sees: X
-```
+✅ Uji Fungsionalitas
+1. Program uji yang digunakan:
+    a. ptest → menguji syscall getpinfo(), menampilkan daftar proses aktif.
+    b. rtest → menguji syscall getreadcount(), memantau jumlah pemanggilan fungsi read().
+2. Langkah pengujian:
+    a. Build xv6 dengan make clean && make qemu-nox.
+    b. Jalankan program uji ptest dan rtest di dalam shell xv6.
+   
+---
 
-### 📍 Contoh Output `shmtest`:
+📷 Hasil Uji
+📍 Output ptest (uji getpinfo):
+yaml
+PID     MEM     NAME
+1       4096    init
+2       2048    sh
+3       2048    ptest
+
 
 ```
 Child reads: A
 Parent reads: B
 ```
 
-### 📍 Contoh Output `chmodtest`:
-
-```
-Write blocked as expected
-```
-
-Jika ada screenshot:
-
-```
-![hasil cowtest](./screenshots/cowtest_output.png)
-```
+📍 Output rtest (uji getreadcount):
+mathematica
+Read Count Sebelum: 4
+hello
+Read Count Setelah: 5
 
 ---
 
 ## ⚠️ Kendala yang Dihadapi
 
-Tuliskan kendala (jika ada), misalnya:
-
-* Salah implementasi `page fault` menyebabkan panic
-* Salah memetakan alamat shared memory ke USERTOP
-* Proses biasa bisa akses audit log (belum ada validasi PID)
+1. Awalnya menggunakan ptable_lock yang tidak ada di xv6-public, sehingga perlu diganti dengan ptable.lock.
+2. Error pointer pada argptr() jika tidak menggunakan cast (char**) untuk parameter struct di sys_getpinfo.
+3. Harus memastikan urutan update Makefile agar program uji (ptest dan rtest) ikut ter-compile.
 
 ---
 
 ## 📚 Referensi
 
-Tuliskan sumber referensi yang Anda gunakan, misalnya:
-
-* Buku xv6 MIT: [https://pdos.csail.mit.edu/6.828/2018/xv6/book-rev11.pdf](https://pdos.csail.mit.edu/6.828/2018/xv6/book-rev11.pdf)
-* Repositori xv6-public: [https://github.com/mit-pdos/xv6-public](https://github.com/mit-pdos/xv6-public)
-* Stack Overflow, GitHub Issues, diskusi praktikum
+Buku xv6 MIT: https://pdos.csail.mit.edu/6.828/2018/xv6/book-rev11.pdf
+Repositori xv6-public: https://github.com/mit-pdos/xv6-public
+Diskusi praktikum dan dokumentasi terkait syscall xv6.
 
 ---
 
