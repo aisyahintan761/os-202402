@@ -1,97 +1,73 @@
 # 📝 Laporan Tugas Akhir
 
-**Mata Kuliah**: Sistem Operasi
-**Semester**: Genap / Tahun Ajaran 2024–2025
-**Nama**: `<Nama Lengkap>`
-**NIM**: `<Nomor Induk Mahasiswa>`
-**Modul yang Dikerjakan**:
-`(Contoh: Modul 1 – System Call dan Instrumentasi Kernel)`
+**Mata Kuliah**: Sistem Operasi  
+**Semester**: Genap / Tahun Ajaran 2024–2025  
+**Nama**: Aisyah Intan Nurjannah 
+**NIM**: 240202894 
+**Modul yang Dikerjakan**:  
+`Modul 5 – Audit dan Keamanan Sistem`
 
 ---
 
 ## 📌 Deskripsi Singkat Tugas
 
-Tuliskan deskripsi singkat dari modul yang Anda kerjakan. Misalnya:
+Pada modul ini, dilakukan implementasi mekanisme **Audit Log** pada kernel xv6 untuk mencatat setiap pemanggilan **system call**. Selain itu, ditambahkan syscall baru `get_audit_log()` yang hanya dapat diakses oleh proses **PID 1 (init)** untuk membaca catatan log tersebut.
 
-* **Modul 1 – System Call dan Instrumentasi Kernel**:
-  Menambahkan dua system call baru, yaitu `getpinfo()` untuk melihat proses yang aktif dan `getReadCount()` untuk menghitung jumlah pemanggilan `read()` sejak boot.
 ---
 
 ## 🛠️ Rincian Implementasi
 
-Tuliskan secara ringkas namun jelas apa yang Anda lakukan:
+* Menambahkan **struktur audit log** di `syscall.c` untuk menyimpan informasi (PID, nomor syscall, waktu/tick).
+* Memodifikasi fungsi `syscall()` untuk mencatat setiap pemanggilan system call ke dalam log.
+* Menambahkan system call baru `get_audit_log()` di `sysproc.c` dengan pembatasan akses hanya untuk PID 1.
+* Menambahkan deklarasi syscall di `defs.h`, `user.h`, `usys.S`, dan `syscall.h`.
+* Membuat program uji `audit.c` untuk menampilkan isi audit log.
+* Menambahkan entry `_audit` di `Makefile`.
 
-### Contoh untuk Modul 1:
-
-* Menambahkan dua system call baru di file `sysproc.c` dan `syscall.c`
-* Mengedit `user.h`, `usys.S`, dan `syscall.h` untuk mendaftarkan syscall
-* Menambahkan struktur `struct pinfo` di `proc.h`
-* Menambahkan counter `readcount` di kernel
-* Membuat dua program uji: `ptest.c` dan `rtest.c`
 ---
 
 ## ✅ Uji Fungsionalitas
 
-Tuliskan program uji apa saja yang Anda gunakan, misalnya:
+Program uji yang digunakan:
 
-* `ptest`: untuk menguji `getpinfo()`
-* `rtest`: untuk menguji `getReadCount()`
-* `cowtest`: untuk menguji fork dengan Copy-on-Write
-* `shmtest`: untuk menguji `shmget()` dan `shmrelease()`
-* `chmodtest`: untuk memastikan file `read-only` tidak bisa ditulis
-* `audit`: untuk melihat isi log system call (jika dijalankan oleh PID 1)
+* `audit`: Menampilkan daftar log system call (jika dijalankan sebagai PID 1).
 
 ---
 
 ## 📷 Hasil Uji
 
-Lampirkan hasil uji berupa screenshot atau output terminal. Contoh:
+### 📍 Output ketika dijalankan oleh user biasa:
+$ audit
+Access denied or error.
 
-### 📍 Contoh Output `cowtest`:
+shell
+Copy
+Edit
 
-```
-Child sees: Y
-Parent sees: X
-```
+### 📍 Output ketika dijalankan sebagai PID 1:
+=== Audit Log ===
+[0] PID=1 SYSCALL=5 TICK=12
+[1] PID=1 SYSCALL=6 TICK=13
+...
 
-### 📍 Contoh Output `shmtest`:
-
-```
-Child reads: A
-Parent reads: B
-```
-
-### 📍 Contoh Output `chmodtest`:
-
-```
-Write blocked as expected
-```
-
-Jika ada screenshot:
-
-```
-![hasil cowtest](./screenshots/cowtest_output.png)
-```
+yaml
+Copy
+Edit
 
 ---
 
 ## ⚠️ Kendala yang Dihadapi
 
-Tuliskan kendala (jika ada), misalnya:
-
-* Salah implementasi `page fault` menyebabkan panic
-* Salah memetakan alamat shared memory ke USERTOP
-* Proses biasa bisa akses audit log (belum ada validasi PID)
+* Perlu memastikan bahwa hanya proses PID 1 yang memiliki hak akses membaca log.
+* Ukuran log terbatas (`MAX_AUDIT=128`), sehingga log dapat penuh jika sistem berjalan lama.
+* Saat menguji sebagai PID 1, perlu memodifikasi `init.c` agar menjalankan `audit` sebagai proses pertama.
 
 ---
 
 ## 📚 Referensi
 
-Tuliskan sumber referensi yang Anda gunakan, misalnya:
-
-* Buku xv6 MIT: [https://pdos.csail.mit.edu/6.828/2018/xv6/book-rev11.pdf](https://pdos.csail.mit.edu/6.828/2018/xv6/book-rev11.pdf)
-* Repositori xv6-public: [https://github.com/mit-pdos/xv6-public](https://github.com/mit-pdos/xv6-public)
-* Stack Overflow, GitHub Issues, diskusi praktikum
+* Buku xv6 MIT: [https://pdos.csail.mit.edu/6.828/2018/xv6/book-rev11.pdf](https://pdos.csail.mit.edu/6.828/2018/xv6/book-rev11.pdf)  
+* Source code `syscall.c`, `sysproc.c`, `proc.c` dalam xv6-public  
+* Diskusi praktikum dan dokumentasi MIT xv6
 
 ---
-
