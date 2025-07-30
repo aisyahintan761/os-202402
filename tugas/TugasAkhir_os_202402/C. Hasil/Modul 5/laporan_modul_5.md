@@ -44,6 +44,9 @@ shell
 Copy
 Edit
 
+<img width="672" height="199" alt="modul 5a" src="https://github.com/user-attachments/assets/77a7d56c-bd68-4c11-82df-b57e5b59a9d1" />
+
+
 ### 📍 Output ketika dijalankan sebagai PID 1:
 === Audit Log ===
 [0] PID=1 SYSCALL=5 TICK=12
@@ -54,7 +57,8 @@ yaml
 Copy
 Edit
 
-![hasil ptest dan rtest](./screenshoot5/modul5.PNG)
+<img width="712" height="430" alt="modul 5b" src="https://github.com/user-attachments/assets/d2bfc879-f719-4a32-ac86-bc005de6db79" />
+
 
 ---
 
